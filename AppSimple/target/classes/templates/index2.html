@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>Carga de Datos</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <!--css-->
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+
+    </head>
+    <body>
+        <div class="text-center"> 
+            <br>
+            <h2>Agregar de Persona</h2>
+            <br>
+        </div>
+        <div class="container">
+            <form action="#" th:action="@{/personas/addpersona}" th:object="${person}" method="post" >
+                <input type="hidden"th:field="*{id_persona}">
+                <div class="input-group mb-2">
+                    <div class="input-group-prepend">
+                        <div class="input-group-text">Nombre</div>
+                    </div>
+                    <input th:field="*{nombre}" th:value="${nombre}"  type="text" class="form-control" id="inlineFormInputGroup">
+                </div>
+                <div class="input-group mb-2">
+                    <div class="input-group-prepend">
+                        <div class="input-group-text">Apellido</div>
+                    </div>
+                    <input th:field="*{apellido}" th:value="${apellido}" type="text" class="form-control" id="inlineFormInputGroup">
+                </div>
+                <div class="input-group mb-2">
+                    <div class="input-group-prepend">
+                        <div class="input-group-text">Email</div>
+                    </div>
+                    <input th:field="*{email}" th:value="${email}" type="text" class="form-control" id="inlineFormInputGroup">
+                </div>
+                <div class="input-group mb-2">
+                    <div class="input-group-prepend">
+                        <div class="input-group-text">Telefono</div>
+                    </div>
+                    <input th:field="*{tel}" th:value="${tel}" type="number" class="form-control" id="inlineFormInputGroup">
+                </div>
+                <div class="input-group mb-2">
+                    <div class="input-group-prepend">
+                        <div class="input-group-text">Direccion</div>
+                    </div>
+                    <input th:field="*{direccion}" th:value="${direccion}" type="text" class="form-control" id="inlineFormInputGroup">
+                </div>
+                <br>
+                <a><button type="submit" class="btn btn-danger">Guardar</button></a>
+                <a href="#" th:href="@{/personas/cancelar}" ><button type="button" class="btn btn-danger">Cancelar</button></a>
+                <br>
+            </form>
+        </div>
+    </body>
+</html>
