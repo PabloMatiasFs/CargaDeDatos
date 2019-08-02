@@ -4,5 +4,5 @@ idpersona int auto_increment primary key,
 nombre varchar(45)not null,
 apellido varchar(45) not null,
 email varchar(45) not null,
-tel int,
+tel int(15) not null,
 direccion varchar(45) not null);
