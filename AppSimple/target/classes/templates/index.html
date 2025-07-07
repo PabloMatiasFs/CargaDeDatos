@@ -50,8 +50,8 @@ and open the template in the editor.
                         <td th:text=" ${Persona.email} "></td>
                         <td th:text=" ${Persona.tel} "></td>
                         <td th:text=" ${Persona.direccion} "></td>
-                        <td ><a href="#" th:href="@{/personas/eliminarpersona?id=__${Persona.id_persona}__}"><button type="button" class="btn btn-danger">Eliminar</button></a></td>
-                        <td ><a href="#" th:href="@{/personas/editarpersona?id=__${Persona.id_persona}__}"><button type="button" class="btn btn-primary">Editar</button></a></td>
+                        <td ><a href="#" th:href="@{/personas/eliminarpersona?id=__${Persona.id_persona}__}"><button type="button" class="btn btn-outline-danger">Eliminar</button></a></td>
+                        <td ><a href="#" th:href="@{/personas/editarpersona?id=__${Persona.id_persona}__}"><button type="button" class="btn btn-outline-primary">Editar</button></a></td>
                     </tr>
                 </tbody>
             </table>
