@@ -1,8 +1,30 @@
-Create database maven;
-Create table datospersonas(
-idpersona int auto_increment primary key,
-nombre varchar(45)not null,
-apellido varchar(45) not null,
-email varchar(45) not null,
-tel int(15) not null,
-direccion varchar(45) not null);
+-- Base de Datos para el Sistema de Gestión de Personas
+-- Migrado a Java 11 con Arquitectura Hexagonal
+
+CREATE DATABASE IF NOT EXISTS maven CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+USE maven;
+
+-- Tabla de personas actualizada para la nueva arquitectura
+CREATE TABLE IF NOT EXISTS datospersonas (
+    idpersona INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(45) NOT NULL,
+    apellido VARCHAR(45) NOT NULL,
+    email VARCHAR(45) NOT NULL UNIQUE,
+    tel VARCHAR(20) NOT NULL, -- Cambiado a VARCHAR para mayor flexibilidad
+    direccion VARCHAR(100) NOT NULL, -- Aumentado el tamaño
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    INDEX idx_nombre (nombre),
+    INDEX idx_apellido (apellido),
+    INDEX idx_email (email)
+);
+
+-- Base de datos para desarrollo
+CREATE DATABASE IF NOT EXISTS maven_dev CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- Datos de ejemplo (opcional)
+INSERT INTO datospersonas (nombre, apellido, email, tel, direccion) VALUES 
+('Juan', 'Pérez', 'juan.perez@email.com', '1234567890', 'Calle Principal 123'),
+('María', 'García', 'maria.garcia@email.com', '0987654321', 'Avenida Central 456'),
+('Carlos', 'López', 'carlos.lopez@email.com', '5555555555', 'Plaza Mayor 789')
+ON DUPLICATE KEY UPDATE nombre = VALUES(nombre);
