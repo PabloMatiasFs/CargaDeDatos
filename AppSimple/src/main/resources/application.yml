@@ -3,10 +3,10 @@ spring:
     name: personas-hexagonal
   
   datasource:
-    url: jdbc:mysql://localhost:3306/maven?createDatabaseIfNotExist=true&useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
-    username: root
-    password: 
-    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:postgresql://localhost:5432/personas_db?createDatabaseIfNotExist=true
+    username: postgres
+    password: admin
+    driver-class-name: org.postgresql.Driver
     
   jpa:
     hibernate:
@@ -14,7 +14,7 @@ spring:
     show-sql: true
     properties:
       hibernate:
-        dialect: org.hibernate.dialect.MySQLDialect
+        dialect: org.hibernate.dialect.PostgreSQLDialect
         format_sql: true
     open-in-view: false
     
@@ -51,10 +51,16 @@ spring:
     activate:
       on-profile: dev
   datasource:
-    url: jdbc:mysql://localhost:3306/maven_dev?createDatabaseIfNotExist=true&useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+    url: jdbc:postgresql://localhost:5432/personas_db_dev?createDatabaseIfNotExist=true
+    username: postgres
+    password: pass123456
+    driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
       ddl-auto: create-drop
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
 
 ---
 # Perfil de pruebas
@@ -81,10 +87,18 @@ spring:
   config:
     activate:
       on-profile: prod
+  datasource:
+    url: jdbc:postgresql://localhost:5432/personas_db_prod
+    username: postgres
+    password: admin
+    driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
       ddl-auto: validate
     show-sql: false
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
   logging:
     level:
       com.company: INFO
