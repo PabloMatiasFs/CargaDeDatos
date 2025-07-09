@@ -2,7 +2,7 @@
 
 ![Java](https://img.shields.io/badge/Java-11-orange)
 ![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.2.0-brightgreen)
-![MySQL](https://img.shields.io/badge/MySQL-8.0-blue)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-15-blue)
 ![License](https://img.shields.io/badge/License-MIT-green)
 
 > **Sistema modernizado** de gestión de personas migrado de Java 8 a **Java 11** implementando **Arquitectura Hexagonal** (Ports & Adapters) con las mejores prácticas de desarrollo.
@@ -13,7 +13,7 @@
 - **Java 11** - LTS con mejoras de rendimiento y nuevas características
 - **Spring Boot 3.2.0** - Framework moderno con Jakarta EE
 - **Spring Data JPA** - Persistencia con Hibernate
-- **MySQL 8.0** - Base de datos principal
+- **PostgreSQL 15** - Base de datos principal
 - **H2** - Base de datos en memoria para testing
 
 ### Arquitectura y Calidad
@@ -29,7 +29,7 @@
 
 ### Testing y DevOps
 - **JUnit 5** - Testing framework
-- **Testcontainers** - Testing con contenedores
+- **Testcontainers** - Testing con contenedores PostgreSQL
 - **Spring Boot Actuator** - Métricas y monitoreo
 
 ## 🏗️ Arquitectura Hexagonal
@@ -103,7 +103,7 @@ src/main/java/com/company/
 ### Prerrequisitos
 - Java 11 o superior
 - Maven 3.6+
-- MySQL 8.0+ (o usar H2 para desarrollo)
+- PostgreSQL 15+ (o usar H2 para desarrollo)
 
 ### Instalación
 
@@ -115,8 +115,10 @@ src/main/java/com/company/
 
 2. **Configurar base de datos**
    ```bash
-   # Ejecutar el script SQL en MySQL
-   mysql -u root -p < "Base de Datos"
+   # Crear la base de datos en PostgreSQL
+   psql -U postgres -c "CREATE DATABASE personas_db;"
+   psql -U postgres -c "CREATE DATABASE personas_db_dev;"
+   psql -U postgres -c "CREATE DATABASE personas_db_prod;"
    ```
 
 3. **Ejecutar la aplicación**
@@ -155,12 +157,17 @@ GET    /personas/eliminarpersona?id={id} # Eliminar persona
 
 ## 🧪 Testing
 
+Los tests utilizan H2 como base de datos en memoria para mayor velocidad y aislamiento:
+
 ```bash
 # Ejecutar todos los tests
 mvn test
 
 # Tests con perfil específico
 mvn test -Dspring.profiles.active=test
+
+# Tests con Testcontainers (PostgreSQL en contenedor)
+mvn test -Dspring.profiles.active=testcontainers
 ```
 
 ## 📊 Monitoreo
@@ -173,17 +180,48 @@ La aplicación incluye Spring Boot Actuator para monitoreo:
 
 ## 🔧 Configuración
 
+### Configuración de PostgreSQL
+
+La aplicación está configurada para usar PostgreSQL como base de datos principal:
+
+#### **Configuración por defecto:**
+- **Host**: `localhost`
+- **Puerto**: `5432`
+- **Base de datos**: `personas_db`
+- **Usuario**: `postgres`
+- **Contraseña**: `pass123456`
+
+#### **Bases de datos por perfil:**
+- **Default**: `personas_db`
+- **Desarrollo**: `personas_db_dev`
+- **Producción**: `personas_db_prod`
+
+#### **Comandos útiles de PostgreSQL:**
+```bash
+# Conectar a PostgreSQL
+psql -U postgres -h localhost
+
+# Crear bases de datos
+CREATE DATABASE personas_db;
+CREATE DATABASE personas_db_dev;
+CREATE DATABASE personas_db_prod;
+
+# Verificar conexión
+\c personas_db
+\dt
+```
+
 ### Perfiles Disponibles
-- **dev** - Desarrollo con MySQL local
+- **dev** - Desarrollo con PostgreSQL local
 - **test** - Testing con H2 en memoria
-- **prod** - Producción (configuración optimizada)
+- **prod** - Producción con PostgreSQL (configuración optimizada)
 
 ### Variables de Entorno
 ```properties
 # Base de datos
-SPRING_DATASOURCE_URL=jdbc:mysql://localhost:3306/maven
-SPRING_DATASOURCE_USERNAME=root
-SPRING_DATASOURCE_PASSWORD=
+SPRING_DATASOURCE_URL=jdbc:postgresql://localhost:5432/personas_db
+SPRING_DATASOURCE_USERNAME=postgres
+SPRING_DATASOURCE_PASSWORD=pass123456
 
 # Puerto de la aplicación
 SERVER_PORT=8080
