@@ -13,7 +13,7 @@
 - **Java 11** - LTS con mejoras de rendimiento y nuevas características
 - **Spring Boot 3.2.0** - Framework moderno con Jakarta EE
 - **Spring Data JPA** - Persistencia con Hibernate
-- **PostgreSQL 15** - Base de datos principal
+- **PostgreSQL 15** - Base de datos principal (migrado desde MySQL)
 - **H2** - Base de datos en memoria para testing
 
 ### Arquitectura y Calidad
@@ -25,7 +25,7 @@
 ### API y Documentación
 - **OpenAPI 3** (Swagger) - Documentación automática de API
 - **Thymeleaf** - Templates para vistas web
-- **Bootstrap** - UI responsive
+- **Bootstrap** - UI responsive con notificaciones
 
 ### Testing y DevOps
 - **JUnit 5** - Testing framework
@@ -79,6 +79,33 @@
 - 📈 **Mejor observabilidad** con Spring Boot Actuator
 - 🧹 **Código más limpio** con nuevas APIs
 
+## 🔄 Migración a PostgreSQL
+
+### Cambios Realizados
+- ✅ **Migrado desde MySQL** a PostgreSQL 15
+- ✅ **Scripts SQL** específicos para PostgreSQL
+- ✅ **Configuración optimizada** para rendimiento
+- ✅ **Índices y triggers** para integridad de datos
+- ✅ **Esquema público** con mejores prácticas
+
+### Configuración de Base de Datos
+```sql
+-- Base de datos principal
+CREATE DATABASE personas_db;
+
+-- Tabla con esquema público
+CREATE TABLE public.datospersonas (
+    idpersona SERIAL PRIMARY KEY,
+    nombre VARCHAR(45) NOT NULL,
+    apellido VARCHAR(45) NOT NULL,
+    email VARCHAR(45) NOT NULL UNIQUE,
+    tel VARCHAR(20) NOT NULL,
+    direccion VARCHAR(100) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+```
+
 ## 📚 Estructura del Proyecto
 
 ```
@@ -110,15 +137,16 @@ src/main/java/com/company/
 1. **Clonar el repositorio**
    ```bash
    git clone <repository-url>
-   cd personas-hexagonal
+   cd CargaDeDatos
    ```
 
-2. **Configurar base de datos**
+2. **Configurar base de datos PostgreSQL**
    ```bash
-   # Crear la base de datos en PostgreSQL
+   # Crear la base de datos
    psql -U postgres -c "CREATE DATABASE personas_db;"
-   psql -U postgres -c "CREATE DATABASE personas_db_dev;"
-   psql -U postgres -c "CREATE DATABASE personas_db_prod;"
+   
+   # Ejecutar script de inicialización
+   psql -U postgres -d personas_db -f "Base de Datos/init_database.sql"
    ```
 
 3. **Ejecutar la aplicación**
@@ -128,10 +156,10 @@ src/main/java/com/company/
    ```
 
 4. **Acceder a las interfaces**
-   - **API REST**: http://localhost:8080/personas-api/api/v1/personas
-   - **Swagger UI**: http://localhost:8080/personas-api/swagger-ui.html
-   - **Web UI**: http://localhost:8080/personas-api/personas/listado
-   - **Actuator**: http://localhost:8080/personas-api/actuator
+   - **API REST**: http://localhost:8080/api/v1/personas
+   - **Swagger UI**: http://localhost:8080/swagger-ui.html
+   - **Web UI**: http://localhost:8080/personas/listado
+   - **Actuator**: http://localhost:8080/actuator
 
 ## 🌐 API Endpoints
 
@@ -152,8 +180,25 @@ GET    /personas/listado             # Lista de personas
 GET    /personas/addpersona          # Formulario nueva persona
 POST   /personas/addpersona          # Crear persona
 GET    /personas/editarpersona?id={id} # Formulario editar
+POST   /personas/editarpersona       # Actualizar persona
 GET    /personas/eliminarpersona?id={id} # Eliminar persona
 ```
+
+## 🎨 Características del Frontend
+
+### Interfaz Web Mejorada
+- ✅ **Formulario unificado** para crear y editar personas
+- ✅ **Notificaciones Bootstrap** para feedback al usuario
+- ✅ **Validación en tiempo real** con Thymeleaf
+- ✅ **Diseño responsive** con Bootstrap 4
+- ✅ **Mensajes de éxito/error** con Flash Attributes
+
+### Funcionalidades Implementadas
+- 🔄 **CRUD completo** de personas
+- 📝 **Formulario dinámico** que cambia según la acción
+- 🔍 **Búsqueda** por nombre y apellido
+- 🎯 **Validaciones** del lado cliente y servidor
+- 📱 **Interfaz móvil** responsive
 
 ## 🧪 Testing
 
@@ -191,63 +236,90 @@ La aplicación está configurada para usar PostgreSQL como base de datos princip
 - **Usuario**: `postgres`
 - **Contraseña**: `pass123456`
 
-#### **Bases de datos por perfil:**
-- **Default**: `personas_db`
-- **Desarrollo**: `personas_db_dev`
-- **Producción**: `personas_db_prod`
+#### **Archivos de configuración:**
+- `application.properties` - Configuración general
+- `application.yml` - Configuración alternativa
+- `Base de Datos/init_database.sql` - Script de inicialización
 
 #### **Comandos útiles de PostgreSQL:**
 ```bash
 # Conectar a PostgreSQL
-psql -U postgres -h localhost
+psql -U postgres -d personas_db
 
-# Crear bases de datos
-CREATE DATABASE personas_db;
-CREATE DATABASE personas_db_dev;
-CREATE DATABASE personas_db_prod;
-
-# Verificar conexión
-\c personas_db
+# Ver tablas
 \dt
+
+# Ver datos
+SELECT * FROM public.datospersonas;
+
+# Backup
+pg_dump -U postgres personas_db > backup.sql
+
+# Restore
+psql -U postgres personas_db < backup.sql
 ```
 
-### Perfiles Disponibles
-- **dev** - Desarrollo con PostgreSQL local
-- **test** - Testing con H2 en memoria
-- **prod** - Producción con PostgreSQL (configuración optimizada)
+## 🚀 Despliegue
+
+### Perfiles de Spring Boot
+- **default**: Configuración de desarrollo
+- **dev**: Desarrollo con logging detallado
+- **prod**: Producción optimizada
 
 ### Variables de Entorno
-```properties
+```bash
 # Base de datos
 SPRING_DATASOURCE_URL=jdbc:postgresql://localhost:5432/personas_db
 SPRING_DATASOURCE_USERNAME=postgres
 SPRING_DATASOURCE_PASSWORD=pass123456
 
-# Puerto de la aplicación
+# JPA
+SPRING_JPA_HIBERNATE_DDL_AUTO=update
+SPRING_JPA_SHOW_SQL=false
+
+# Server
 SERVER_PORT=8080
 ```
 
-## 🎯 Roadmap
+## 📝 Changelog
 
-- [ ] Implementar autenticación JWT
-- [ ] Agregar caché con Redis
-- [ ] Métricas avanzadas con Micrometer
-- [ ] CI/CD con GitHub Actions
-- [ ] Dockerización
-- [ ] Documentación con AsciiDoc
+### v2.0.0 - Migración a Java 11 + PostgreSQL
+- ✅ Migrado de Java 8 a Java 11
+- ✅ Migrado de MySQL a PostgreSQL 15
+- ✅ Implementada Arquitectura Hexagonal
+- ✅ Agregado OpenAPI 3 (Swagger)
+- ✅ Mejorado frontend con Bootstrap
+- ✅ Agregadas notificaciones y validaciones
+- ✅ Optimizado rendimiento y seguridad
 
-## 🤝 Contribuir
+### v1.0.0 - Versión Original
+- Sistema básico de gestión de personas
+- Java 8 + MySQL
+- Interfaz web simple
+
+## 🤝 Contribución
 
 1. Fork el proyecto
-2. Crear rama feature (`git checkout -b feature/nueva-funcionalidad`)
-3. Commit cambios (`git commit -am 'Agregar nueva funcionalidad'`)
-4. Push a la rama (`git push origin feature/nueva-funcionalidad`)
-5. Crear Pull Request
+2. Crea una rama para tu feature (`git checkout -b feature/AmazingFeature`)
+3. Commit tus cambios (`git commit -m 'Add some AmazingFeature'`)
+4. Push a la rama (`git push origin feature/AmazingFeature`)
+5. Abre un Pull Request
 
 ## 📄 Licencia
 
 Este proyecto está bajo la Licencia MIT - ver el archivo [LICENSE](LICENSE) para detalles.
 
+## 👥 Autores
+
+- **Tu Nombre** - *Desarrollo inicial* - [TuGitHub](https://github.com/tugithub)
+
+## 🙏 Agradecimientos
+
+- Spring Boot Team por el excelente framework
+- PostgreSQL Community por la base de datos robusta
+- Bootstrap Team por el framework CSS
+- Thymeleaf Team por el motor de templates
+
 ---
 
-**Migrado con ❤️ de Java 8 a Java 11 con Arquitectura Hexagonal**
+⭐ **Si este proyecto te ayuda, por favor dale una estrella en GitHub!**

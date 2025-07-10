@@ -7,7 +7,7 @@ import jakarta.persistence.*;
  * Adaptador entre el modelo de dominio y la base de datos
  */
 @Entity
-@Table(name = "datospersonas")
+@Table(name = "datospersonas", schema = "public")
 public class PersonaJpaEntity {
 
     @Id

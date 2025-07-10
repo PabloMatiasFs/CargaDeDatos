@@ -2,28 +2,46 @@ package com.company.infrastructure.adapter.web.mapper;
 
 import com.company.domain.entity.Persona;
 import com.company.infrastructure.adapter.web.dto.PersonaResponse;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Mapper para convertir entre entidades de dominio y DTOs web
  */
-@Mapper(componentModel = "spring")
-public interface PersonaWebMapper {
+@Component
+public class PersonaWebMapper {
 
     /**
      * Convierte de entidad de dominio a DTO de respuesta
      */
-    @Mapping(target = "id", source = "id.value")
-    @Mapping(target = "email", source = "email.value")
-    @Mapping(target = "telefono", source = "telefono.value")
-    @Mapping(target = "nombreCompleto", source = "nombreCompleto")
-    PersonaResponse toResponse(Persona persona);
+    public PersonaResponse toResponse(Persona persona) {
+        if (persona == null) {
+            return null;
+        }
+        
+        return new PersonaResponse(
+            persona.getId() != null ? persona.getId().getValue() : null,
+            persona.getNombre(),
+            persona.getApellido(),
+            persona.getEmail() != null ? persona.getEmail().getValue() : null,
+            persona.getTelefono() != null ? persona.getTelefono().getValue() : null,
+            persona.getDireccion(),
+            persona.getNombreCompleto()
+        );
+    }
 
     /**
      * Convierte una lista de entidades de dominio a lista de DTOs de respuesta
      */
-    List<PersonaResponse> toResponseList(List<Persona> personas);
+    public List<PersonaResponse> toResponseList(List<Persona> personas) {
+        if (personas == null) {
+            return null;
+        }
+        
+        return personas.stream()
+                .map(this::toResponse)
+                .collect(Collectors.toList());
+    }
 }

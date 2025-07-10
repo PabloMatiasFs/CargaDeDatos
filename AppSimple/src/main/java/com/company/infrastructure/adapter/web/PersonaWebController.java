@@ -3,6 +3,7 @@ package com.company.infrastructure.adapter.web;
 import com.company.application.service.PersonaApplicationService;
 import com.company.domain.entity.Persona;
 import com.company.infrastructure.adapter.web.dto.PersonaCreateRequest;
+import com.company.infrastructure.adapter.web.dto.PersonaResponse;
 import jakarta.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
 import java.util.List;
@@ -49,7 +51,21 @@ public class PersonaWebController {
         log.info("Listando todas las personas en vista web");
         ModelAndView mav = new ModelAndView(INDEX_VIEW);
         List<Persona> personas = personaApplicationService.obtenerTodasLasPersonas();
-        mav.addObject("personas", personas);
+        
+        // Convertir las entidades de dominio a DTOs para la vista
+        List<PersonaResponse> personasResponse = personas.stream()
+                .map(persona -> new PersonaResponse(
+                    persona.getId() != null ? persona.getId().getValue() : null,
+                    persona.getNombre(),
+                    persona.getApellido(),
+                    persona.getEmail() != null ? persona.getEmail().getValue() : null,
+                    persona.getTelefono() != null ? persona.getTelefono().getValue() : null,
+                    persona.getDireccion(),
+                    persona.getNombreCompleto()
+                ))
+                .collect(java.util.stream.Collectors.toList());
+        
+        mav.addObject("personas", personasResponse);
         return mav;
     }
 
@@ -69,7 +85,7 @@ public class PersonaWebController {
      */
     @PostMapping("/addpersona")
     public String agregarPersona(@ModelAttribute("person") PersonaCreateRequest personaRequest, 
-                                Model model, HttpServletResponse httpResponse) throws IOException {
+                                Model model, RedirectAttributes redirectAttributes) {
         log.info("Procesando formulario para crear persona: {}", personaRequest);
         
         try {
@@ -81,7 +97,7 @@ public class PersonaWebController {
                     personaRequest.getTelefono(),
                     personaRequest.getDireccion()
             );
-            httpResponse.sendRedirect("/personas/listado");
+            redirectAttributes.addFlashAttribute("success", "✅ Persona creada exitosamente");
             return "redirect:/personas/listado";
         } catch (IllegalArgumentException e) {
             log.error("Error al crear persona: {}", e.getMessage());
@@ -94,15 +110,18 @@ public class PersonaWebController {
      * Elimina una persona mediante ID
      */
     @GetMapping("/eliminarpersona")
-    public ModelAndView eliminarPersona(@RequestParam("id") Integer id) {
+    public String eliminarPersona(@RequestParam("id") Integer id, RedirectAttributes redirectAttributes) {
         log.info("Eliminando persona con ID: {}", id);
         
         boolean eliminada = personaApplicationService.eliminarPersona(id);
-        if (!eliminada) {
-            log.warn("No se pudo eliminar la persona con ID: {}", id);
+        
+        if (eliminada) {
+            redirectAttributes.addFlashAttribute("success", "✅ Persona eliminada exitosamente");
+        } else {
+            redirectAttributes.addFlashAttribute("error", "❌ No se pudo eliminar la persona");
         }
         
-        return listarPersonas();
+        return "redirect:/personas/listado";
     }
 
     /**
@@ -129,7 +148,9 @@ public class PersonaWebController {
             return new ModelAndView(FORM_VIEW);
         } else {
             log.warn("Persona con ID {} no encontrada", id);
-            return listarPersonas();
+            ModelAndView mav = listarPersonas();
+            mav.addObject("error", "Persona no encontrada");
+            return mav;
         }
     }
 
@@ -137,10 +158,15 @@ public class PersonaWebController {
      * Procesa la actualización de persona
      */
     @PostMapping("/editarpersona")
-    public String actualizarPersona(@RequestParam("id") Integer id,
+    public String actualizarPersona(@RequestParam(value = "id", required = false) Integer id,
                                    @ModelAttribute("person") PersonaCreateRequest personaRequest,
-                                   Model model, HttpServletResponse httpResponse) throws IOException {
+                                   Model model, RedirectAttributes redirectAttributes) {
         log.info("Actualizando persona con ID: {}, datos: {}", id, personaRequest);
+        
+        if (id == null) {
+            model.addAttribute("error", "ID de persona no proporcionado");
+            return FORM_VIEW;
+        }
         
         try {
             Optional<Persona> personaActualizada = personaApplicationService.actualizarPersona(
@@ -153,11 +179,12 @@ public class PersonaWebController {
             );
             
             if (personaActualizada.isPresent()) {
-                httpResponse.sendRedirect("/personas/listado");
+                redirectAttributes.addFlashAttribute("success", "✅ Persona actualizada exitosamente");
                 return "redirect:/personas/listado";
             } else {
                 log.warn("No se pudo actualizar la persona con ID: {}", id);
                 model.addAttribute("error", "Persona no encontrada");
+                model.addAttribute("personId", id);
                 return FORM_VIEW;
             }
         } catch (IllegalArgumentException e) {

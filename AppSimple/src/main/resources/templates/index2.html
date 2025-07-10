@@ -14,19 +14,25 @@ and open the template in the editor.
 
     </head>
     <body>
+        <!-- Incluir fragmento de notificaciones -->
+        <div th:replace="fragments/notifications :: notifications"></div>
+        
         <div class="text-center"> 
             <br>
-            <h2>Agregar de Persona</h2>
+            <h2 th:text="${personId != null ? 'Editar Persona' : 'Agregar Persona'}">Agregar Persona</h2>
             <br>
         </div>
         <div class="container">
-            <form action="#" th:action="@{/personas/addpersona}" th:object="${person}" method="post" >
-                <input type="hidden"th:field="*{id_persona}">
+              <!-- Formulario para EDITAR persona -->
+            <form th:action="${personId != null} ? @{/personas/editarpersona(id=${personId})} : @{/personas/addpersona}" th:object="${person}" method="post" id="personaForm">
+                <!-- Campo oculto para el ID en edición -->
+                <input type="hidden" th:if="${personId != null}" name="id" th:value="${personId}">
+                
                 <div class="input-group mb-2">
                     <div class="input-group-prepend">
                         <div class="input-group-text">Nombre</div>
                     </div>
-                    <input th:field="*{nombre}" th:value="${nombre}"  type="text" class="form-control" id="inlineFormInputGroup">
+                    <input th:field="*{nombre}" th:value="${nombre}" type="text" class="form-control" id="inlineFormInputGroup">
                 </div>
                 <div class="input-group mb-2">
                     <div class="input-group-prepend">
@@ -44,7 +50,7 @@ and open the template in the editor.
                     <div class="input-group-prepend">
                         <div class="input-group-text">Telefono</div>
                     </div>
-                    <input th:field="*{tel}" th:value="${tel}" type="number" class="form-control" id="inlineFormInputGroup">
+                    <input th:field="*{telefono}" th:value="${telefono}" type="text" class="form-control" id="inlineFormInputGroup">
                 </div>
                 <div class="input-group mb-2">
                     <div class="input-group-prepend">
@@ -53,10 +59,41 @@ and open the template in the editor.
                     <input th:field="*{direccion}" th:value="${direccion}" type="text" class="form-control" id="inlineFormInputGroup">
                 </div>
                 <br>
-                <a><button type="submit" class="btn btn-success">Guardar</button></a>
+                <button type="submit" class="btn btn-success" th:text="${personId != null ? 'Actualizar' : 'Guardar'}">Guardar</button>
                 <a href="#" th:href="@{/personas/cancelar}" ><button type="button" class="btn btn-warning">Cancelar</button></a>
                 <br>
             </form>
         </div>
+        
+        <!-- Scripts de Bootstrap -->
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOb2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
+        
+        <!-- Script para mostrar notificaciones del servidor -->
+        <script th:inline="javascript">
+            // Variables del servidor
+            /*<![CDATA[*/
+            const serverMessage = /*[[${message}]]*/ null;
+            const serverError = /*[[${error}]]*/ null;
+            const serverSuccess = /*[[${success}]]*/ null;
+            const serverWarning = /*[[${warning}]]*/ null;
+            const personId = /*[[${personId}]]*/ null;
+            /*]]>*/
+            
+            // Mostrar mensajes del servidor
+            if (serverError) {
+                showServerError(serverError);
+            }
+            if (serverSuccess) {
+                showSuccess(serverSuccess);
+            }
+            if (serverWarning) {
+                showWarning(serverWarning);
+            }
+            if (serverMessage) {
+                showInfo(serverMessage);
+            }
+        </script>
     </body>
 </html>

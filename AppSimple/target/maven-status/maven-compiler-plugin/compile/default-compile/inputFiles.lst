@@ -12,6 +12,7 @@ C:\Users\Fleit\OneDrive\Documentos\workspace\CargaDeDatos\AppSimple\src\main\jav
 C:\Users\Fleit\OneDrive\Documentos\workspace\CargaDeDatos\AppSimple\src\main\java\com\company\application\usecase\ObtenerPersonasUseCase.java
 C:\Users\Fleit\OneDrive\Documentos\workspace\CargaDeDatos\AppSimple\src\main\java\com\company\domain\valueobject\Email.java
 C:\Users\Fleit\OneDrive\Documentos\workspace\CargaDeDatos\AppSimple\src\main\java\com\company\application\usecase\ActualizarPersonaUseCase.java
+C:\Users\Fleit\OneDrive\Documentos\workspace\CargaDeDatos\AppSimple\src\main\java\com\company\infrastructure\adapter\web\NotificationController.java
 C:\Users\Fleit\OneDrive\Documentos\workspace\CargaDeDatos\AppSimple\src\main\java\com\company\domain\entity\Persona.java
 C:\Users\Fleit\OneDrive\Documentos\workspace\CargaDeDatos\AppSimple\src\main\java\com\company\domain\port\PersonaRepository.java
 C:\Users\Fleit\OneDrive\Documentos\workspace\CargaDeDatos\AppSimple\src\main\java\com\company\infrastructure\adapter\web\PersonaController.java

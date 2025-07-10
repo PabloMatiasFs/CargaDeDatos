@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Notificaciones</title>
+</head>
+<body>
+    <!-- Fragmento para notificaciones -->
+    <div th:fragment="notifications">
+        <!-- Contenedor de notificaciones -->
+        <div id="notification-container" style="position: fixed; top: 20px; right: 20px; z-index: 9999;"></div>
+        
+        <!-- Script para mostrar notificaciones -->
+        <script th:inline="javascript">
+            // Función para mostrar notificaciones
+            function showNotification(message, type = 'info', duration = 5000) {
+                const container = document.getElementById('notification-container');
+                
+                // Crear elemento de notificación
+                const notification = document.createElement('div');
+                notification.className = `alert alert-${type} alert-dismissible fade show`;
+                notification.style.minWidth = '300px';
+                notification.style.maxWidth = '400px';
+                notification.style.marginBottom = '10px';
+                notification.style.boxShadow = '0 4px 6px rgba(0, 0, 0, 0.1)';
+                
+                // Contenido de la notificación
+                notification.innerHTML = `
+                    <strong>${type === 'success' ? '✅ Éxito' : type === 'danger' ? '❌ Error' : type === 'warning' ? '⚠️ Advertencia' : 'ℹ️ Información'}</strong>
+                    <br>
+                    ${message}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                `;
+                
+                // Agregar al contenedor
+                container.appendChild(notification);
+                
+                // Auto-cerrar después del tiempo especificado
+                setTimeout(() => {
+                    if (notification.parentNode) {
+                        notification.remove();
+                    }
+                }, duration);
+                
+                // Cerrar al hacer clic en X
+                notification.querySelector('.close').addEventListener('click', () => {
+                    notification.remove();
+                });
+            }
+            
+            // Función para mostrar errores del servidor
+            function showServerError(errorMessage) {
+                showNotification(errorMessage, 'danger', 8000);
+            }
+            
+            // Función para mostrar mensajes de éxito
+            function showSuccess(message) {
+                showNotification(message, 'success', 5000);
+            }
+            
+            // Función para mostrar advertencias
+            function showWarning(message) {
+                showNotification(message, 'warning', 6000);
+            }
+            
+            // Función para mostrar información
+            function showInfo(message) {
+                showNotification(message, 'info', 4000);
+            }
+        </script>
+    </div>
+</body>
+</html> 

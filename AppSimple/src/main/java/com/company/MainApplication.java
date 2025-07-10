@@ -12,7 +12,7 @@ import java.util.Arrays;
  * Aplicación principal del sistema de gestión de personas
  * Migrada a Java 11 con arquitectura hexagonal
  */
-@SpringBootApplication
+@SpringBootApplication(scanBasePackages = "com.company")
 public class MainApplication {
 
     private static final Logger log = LoggerFactory.getLogger(MainApplication.class);
