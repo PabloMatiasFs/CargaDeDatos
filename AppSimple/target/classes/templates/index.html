@@ -19,9 +19,18 @@
                 --danger-color: #ef4444;
                 --warning-color: #f59e0b;
                 --info-color: #3b82f6;
-                --dark-color: #1f2937;
+                --dark-color: #1e293b;
                 --light-color: #f8fafc;
                 --border-color: #e2e8f0;
+                --text-muted: #64748b;
+                --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1);
+                --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
+                --border-radius: 8px;
+                --spacing-xs: 8px;
+                --spacing-sm: 12px;
+                --spacing-md: 16px;
+                --spacing-lg: 24px;
+                --spacing-xl: 32px;
             }
             
             * {
@@ -31,74 +40,95 @@
             body {
                 background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
                 min-height: 100vh;
-                padding: 20px 0;
+                padding: var(--spacing-lg) 0;
             }
             
             .main-container {
                 background: rgba(255, 255, 255, 0.95);
                 backdrop-filter: blur(10px);
-                border-radius: 20px;
-                box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-                padding: 40px;
-                margin: 20px auto;
+                border-radius: var(--border-radius);
+                box-shadow: var(--shadow-sm);
+                padding: var(--spacing-xl);
+                margin: var(--spacing-lg) auto;
                 max-width: 1200px;
             }
             
             .header-section {
                 text-align: center;
-                margin-bottom: 40px;
-                padding: 30px;
+                margin-bottom: var(--spacing-xl);
+                padding: var(--spacing-xl);
                 background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-                border-radius: 15px;
+                border-radius: var(--border-radius);
                 color: white;
                 box-shadow: 0 10px 30px rgba(99, 102, 241, 0.3);
             }
             
             .header-section h1 {
-                font-weight: 700;
-                font-size: 2.5rem;
-                margin-bottom: 10px;
+                font-weight: 600;
+                font-size: 2rem;
+                margin-bottom: var(--spacing-sm);
+                color: white;
             }
             
             .header-section p {
-                font-size: 1.1rem;
-                opacity: 0.9;
+                font-size: 1rem;
+                color: rgba(255, 255, 255, 0.9);
                 margin-bottom: 0;
+            }
+            
+            .info-cards {
+                display: flex;
+                gap: var(--spacing-lg);
+                margin-bottom: var(--spacing-lg);
+            }
+            
+            .stats-card {
+                background: white;
+                border-radius: var(--border-radius);
+                padding: var(--spacing-lg);
+                border: 1px solid var(--border-color);
+                flex: 0 0 200px;
+                text-align: center;
             }
             
             .action-card {
                 background: white;
-                border-radius: 15px;
-                padding: 30px;
-                box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+                border-radius: var(--border-radius);
+                padding: var(--spacing-lg);
                 border: 1px solid var(--border-color);
-                margin-bottom: 30px;
+                flex: 1;
+                text-align: center;
             }
             
-            .action-card h4 {
-                color: var(--dark-color);
+            .records-counter {
+                background: linear-gradient(135deg, var(--success-color), #059669);
+                color: white;
+                padding: var(--spacing-md) var(--spacing-lg);
+                border-radius: var(--border-radius);
                 font-weight: 600;
-                margin-bottom: 20px;
-                display: flex;
+                display: inline-flex;
                 align-items: center;
-                gap: 10px;
+                gap: var(--spacing-sm);
+                box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
+                font-size: 1.1rem;
             }
             
             .btn-modern {
-                padding: 12px 24px;
-                border-radius: 10px;
+                padding: var(--spacing-sm) var(--spacing-lg);
+                border-radius: var(--border-radius);
                 font-weight: 500;
                 border: none;
-                transition: all 0.3s ease;
+                transition: all 0.2s ease;
                 text-decoration: none;
                 display: inline-flex;
                 align-items: center;
-                gap: 8px;
+                gap: var(--spacing-xs);
+                font-size: 0.9rem;
             }
             
             .btn-modern:hover {
-                transform: translateY(-2px);
-                box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+                transform: translateY(-1px);
+                box-shadow: var(--shadow-md);
             }
             
             .btn-primary-modern {
@@ -123,9 +153,8 @@
             
             .table-modern {
                 background: white;
-                border-radius: 15px;
+                border-radius: var(--border-radius);
                 overflow: hidden;
-                box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
                 border: 1px solid var(--border-color);
             }
             
@@ -136,62 +165,77 @@
             
             .table-modern th {
                 border: none;
-                padding: 20px 15px;
+                padding: var(--spacing-md);
                 font-weight: 600;
-                text-transform: uppercase;
                 font-size: 0.85rem;
+                color: white;
+                text-transform: uppercase;
                 letter-spacing: 0.5px;
             }
             
             .table-modern td {
-                padding: 15px;
+                padding: var(--spacing-md);
                 border-bottom: 1px solid var(--border-color);
                 vertical-align: middle;
+                color: var(--dark-color);
             }
             
             .table-modern tbody tr:hover {
                 background-color: #f8fafc;
-                transition: background-color 0.3s ease;
             }
             
             .btn-sm-modern {
-                padding: 8px 16px;
-                font-size: 0.875rem;
-                border-radius: 8px;
+                padding: var(--spacing-xs) var(--spacing-sm);
+                font-size: 0.8rem;
+                border-radius: var(--border-radius);
             }
             
-            .stats-card {
-                background: linear-gradient(135deg, #f8fafc, #e2e8f0);
-                border-radius: 15px;
-                padding: 20px;
+            .empty-state {
                 text-align: center;
-                border: 1px solid var(--border-color);
+                padding: var(--spacing-xl);
             }
             
-            .stats-number {
+            .empty-state i {
                 font-size: 2rem;
-                font-weight: 700;
-                color: var(--primary-color);
+                color: var(--text-muted);
+                margin-bottom: var(--spacing-md);
             }
             
-            .stats-label {
-                color: var(--dark-color);
+            .empty-state p {
+                color: var(--text-muted);
+                margin-bottom: var(--spacing-md);
+            }
+            
+            .icon-muted {
+                color: rgba(255, 255, 255, 0.8);
+            }
+            
+            .data-label {
+                font-size: 0.75rem;
+                color: var(--text-muted);
                 font-weight: 500;
-                margin-top: 5px;
+                text-transform: uppercase;
+                letter-spacing: 0.5px;
+                margin-bottom: var(--spacing-xs);
+            }
+            
+            .data-value {
+                font-weight: 500;
+                color: var(--dark-color);
             }
             
             @media (max-width: 768px) {
                 .main-container {
-                    margin: 10px;
-                    padding: 20px;
+                    margin: var(--spacing-sm);
+                    padding: var(--spacing-lg);
                 }
                 
                 .header-section h1 {
-                    font-size: 2rem;
+                    font-size: 1.5rem;
                 }
                 
-                .table-responsive {
-                    border-radius: 15px;
+                .info-cards {
+                    flex-direction: column;
                 }
             }
         </style>
@@ -204,53 +248,26 @@
             <div class="main-container">
                 <!-- Header Section -->
                 <div class="header-section">
-                    <h1><i class="fas fa-users"></i> Sistema de Gestión de Personas</h1>
-                    <p>Gestiona y administra la información de personas de manera eficiente</p>
+                    <h1><i class="fas fa-users icon-muted"></i> Gestión de Personas</h1>
+                    <p>Administra la información de personas de manera eficiente</p>
                 </div>
                 
-                <!-- Action Card -->
-                <div class="action-card">
-                    <h4>
-                        <i class="fas fa-plus-circle text-success"></i>
-                        Gestión de Personas
-                    </h4>
-                    <a href="#" th:href="@{/personas/addpersona?id=0}" class="btn-modern btn-primary-modern">
-                        <i class="fas fa-user-plus"></i>
-                        Agregar Nueva Persona
-                    </a>
-                </div>
-                
-                <!-- Stats Section -->
-                <div class="row mb-4">
-                    <div class="col-md-3 col-sm-6 mb-3">
-                        <div class="stats-card">
-                            <div class="stats-number" th:text="${personas != null ? personas.size() : 0}">0</div>
-                            <div class="stats-label">Total Personas</div>
+                <!-- Info Cards Row -->
+                <div class="info-cards">
+                    <!-- Records Counter Card -->
+                    <div class="stats-card">
+                        <div class="records-counter">
+                            <i class="fas fa-users"></i>
+                            <span th:text="${personas != null ? personas.size() : 0}">0</span> Registros
                         </div>
                     </div>
-                    <div class="col-md-3 col-sm-6 mb-3">
-                        <div class="stats-card">
-                            <div class="stats-number">
-                                <i class="fas fa-check-circle text-success"></i>
-                            </div>
-                            <div class="stats-label">Sistema Activo</div>
-                        </div>
-                    </div>
-                    <div class="col-md-3 col-sm-6 mb-3">
-                        <div class="stats-card">
-                            <div class="stats-number">
-                                <i class="fas fa-database text-info"></i>
-                            </div>
-                            <div class="stats-label">PostgreSQL</div>
-                        </div>
-                    </div>
-                    <div class="col-md-3 col-sm-6 mb-3">
-                        <div class="stats-card">
-                            <div class="stats-number">
-                                <i class="fas fa-code text-warning"></i>
-                            </div>
-                            <div class="stats-label">Java 11</div>
-                        </div>
+                    
+                    <!-- Action Card -->
+                    <div class="action-card">
+                        <a href="#" th:href="@{/personas/addpersona?id=0}" class="btn-modern btn-primary-modern">
+                            <i class="fas fa-user-plus"></i>
+                            Agregar Persona
+                        </a>
                     </div>
                 </div>
                 
@@ -259,45 +276,61 @@
                     <table class="table table-modern">
                         <thead>
                             <tr>
-                                <th><i class="fas fa-user"></i> Nombre</th>
-                                <th><i class="fas fa-user-tag"></i> Apellido</th>
-                                <th><i class="fas fa-envelope"></i> Email</th>
-                                <th><i class="fas fa-phone"></i> Teléfono</th>
-                                <th><i class="fas fa-map-marker-alt"></i> Dirección</th>
-                                <th><i class="fas fa-cogs"></i> Acciones</th>
+                                <th><i class="fas fa-user icon-muted"></i> Nombre de la Persona</th>
+                                <th><i class="fas fa-user-tag icon-muted"></i> Apellido de la Persona</th>
+                                <th><i class="fas fa-envelope icon-muted"></i> Correo Electrónico</th>
+                                <th><i class="fas fa-phone icon-muted"></i> Número de Teléfono</th>
+                                <th><i class="fas fa-map-marker-alt icon-muted"></i> Dirección de Residencia</th>
+                                <th><i class="fas fa-cogs icon-muted"></i> Opciones de Gestión</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr th:each="persona: ${personas}">
                                 <td>
-                                    <strong th:text="${persona.nombre}"></strong>
+                                    <div class="data-label">Nombre</div>
+                                    <div class="data-value" th:text="${persona.nombre}"></div>
                                 </td>
-                                <td th:text="${persona.apellido}"></td>
                                 <td>
-                                    <a th:href="'mailto:' + ${persona.email}" th:text="${persona.email}" class="text-decoration-none">
-                                        <i class="fas fa-envelope text-info"></i>
-                                    </a>
+                                    <div class="data-label">Apellido</div>
+                                    <div class="data-value" th:text="${persona.apellido}"></div>
                                 </td>
-                                <td th:text="${persona.telefono}"></td>
-                                <td th:text="${persona.direccion}"></td>
                                 <td>
-                                    <div class="btn-group" role="group">
-                                        <a href="#" th:href="@{/personas/editarpersona(id=${persona.id})}" 
-                                           class="btn btn-sm-modern btn-warning-modern me-2">
-                                            <i class="fas fa-edit"></i> Editar
+                                    <div class="data-label">Email</div>
+                                    <div class="data-value">
+                                        <a th:href="'mailto:' + ${persona.email}" th:text="${persona.email}" class="text-decoration-none">
+                                            <i class="fas fa-envelope" style="color: var(--info-color);"></i>
                                         </a>
-                                        <a href="#" th:href="@{/personas/eliminarpersona(id=${persona.id})}" 
-                                           class="btn btn-sm-modern btn-danger-modern"
-                                           onclick="return confirm('¿Estás seguro de que quieres eliminar esta persona?')">
-                                            <i class="fas fa-trash"></i> Eliminar
-                                        </a>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="data-label">Teléfono</div>
+                                    <div class="data-value" th:text="${persona.telefono}"></div>
+                                </td>
+                                <td>
+                                    <div class="data-label">Dirección</div>
+                                    <div class="data-value" th:text="${persona.direccion}"></div>
+                                </td>
+                                <td>
+                                    <div class="data-label">Acciones</div>
+                                    <div class="data-value">
+                                        <div class="btn-group" role="group">
+                                            <a href="#" th:href="@{/personas/editarpersona(id=${persona.id})}" 
+                                               class="btn btn-sm-modern btn-warning-modern me-2">
+                                                <i class="fas fa-edit"></i> Editar
+                                            </a>
+                                            <a href="#" th:href="@{/personas/eliminarpersona(id=${persona.id})}" 
+                                               class="btn btn-sm-modern btn-danger-modern"
+                                               onclick="return confirm('¿Estás seguro de que quieres eliminar esta persona?')">
+                                                <i class="fas fa-trash"></i> Eliminar
+                                            </a>
+                                        </div>
                                     </div>
                                 </td>
                             </tr>
                             <tr th:if="${personas == null || personas.empty}">
-                                <td colspan="6" class="text-center py-4">
-                                    <i class="fas fa-inbox fa-3x text-muted mb-3"></i>
-                                    <p class="text-muted">No hay personas registradas</p>
+                                <td colspan="6" class="empty-state">
+                                    <i class="fas fa-inbox"></i>
+                                    <p>No hay personas registradas</p>
                                     <a href="#" th:href="@{/personas/addpersona?id=0}" class="btn btn-modern btn-primary-modern">
                                         <i class="fas fa-plus"></i> Agregar Primera Persona
                                     </a>

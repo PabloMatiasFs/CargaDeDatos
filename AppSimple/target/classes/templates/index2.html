@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
     <head>
-        <title>Sistema de Gestión de Personas - Formulario</title>
+        <title>Formulario de Persona</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <!-- Bootstrap 5 CSS -->
@@ -19,9 +19,18 @@
                 --danger-color: #ef4444;
                 --warning-color: #f59e0b;
                 --info-color: #3b82f6;
-                --dark-color: #1f2937;
+                --dark-color: #1e293b;
                 --light-color: #f8fafc;
                 --border-color: #e2e8f0;
+                --text-muted: #64748b;
+                --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1);
+                --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
+                --border-radius: 8px;
+                --spacing-xs: 8px;
+                --spacing-sm: 12px;
+                --spacing-md: 16px;
+                --spacing-lg: 24px;
+                --spacing-xl: 32px;
             }
             
             * {
@@ -31,68 +40,59 @@
             body {
                 background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
                 min-height: 100vh;
-                padding: 20px 0;
+                padding: var(--spacing-lg) 0;
             }
             
-            .main-container {
+            .form-container {
                 background: rgba(255, 255, 255, 0.95);
                 backdrop-filter: blur(10px);
-                border-radius: 20px;
-                box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-                padding: 40px;
-                margin: 20px auto;
+                border-radius: var(--border-radius);
+                box-shadow: var(--shadow-sm);
+                padding: var(--spacing-xl);
+                margin: var(--spacing-lg) auto;
                 max-width: 800px;
             }
             
-            .header-section {
+            .form-header {
                 text-align: center;
-                margin-bottom: 40px;
-                padding: 30px;
+                margin-bottom: var(--spacing-xl);
+                padding: var(--spacing-lg);
                 background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-                border-radius: 15px;
+                border-radius: var(--border-radius);
                 color: white;
                 box-shadow: 0 10px 30px rgba(99, 102, 241, 0.3);
             }
             
-            .header-section h1 {
-                font-weight: 700;
-                font-size: 2.5rem;
-                margin-bottom: 10px;
+            .form-header h1 {
+                font-weight: 600;
+                font-size: 1.8rem;
+                margin-bottom: var(--spacing-sm);
+                color: white;
             }
             
-            .header-section p {
-                font-size: 1.1rem;
-                opacity: 0.9;
+            .form-header p {
+                font-size: 0.9rem;
+                color: rgba(255, 255, 255, 0.9);
                 margin-bottom: 0;
             }
             
-            .form-card {
-                background: white;
-                border-radius: 15px;
-                padding: 40px;
-                box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
-                border: 1px solid var(--border-color);
+            .form-group {
+                margin-bottom: var(--spacing-lg);
             }
             
-            .form-group-modern {
-                margin-bottom: 25px;
-            }
-            
-            .form-label-modern {
-                font-weight: 600;
+            .form-label {
+                font-weight: 500;
                 color: var(--dark-color);
-                margin-bottom: 8px;
-                display: flex;
-                align-items: center;
-                gap: 8px;
+                margin-bottom: var(--spacing-xs);
+                font-size: 0.9rem;
             }
             
             .form-control-modern {
-                border: 2px solid var(--border-color);
-                border-radius: 10px;
-                padding: 12px 16px;
-                font-size: 1rem;
-                transition: all 0.3s ease;
+                border: 1px solid var(--border-color);
+                border-radius: var(--border-radius);
+                padding: var(--spacing-sm);
+                font-size: 0.9rem;
+                transition: all 0.2s ease;
                 background: white;
             }
             
@@ -102,51 +102,41 @@
                 outline: none;
             }
             
-            .input-group-modern {
-                position: relative;
-                display: flex;
-                align-items: center;
-            }
-            
-            .input-group-modern .form-control-modern {
-                border-radius: 10px 0 0 10px;
-                border-right: none;
-            }
-            
-            .input-group-text-modern {
-                background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-                color: white;
-                border: 2px solid var(--primary-color);
-                border-left: none;
-                border-radius: 0 10px 10px 0;
-                padding: 12px 16px;
-                font-weight: 500;
-                min-width: 120px;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-            }
-            
             .btn-modern {
-                padding: 12px 24px;
-                border-radius: 10px;
+                padding: var(--spacing-sm) var(--spacing-lg);
+                border-radius: var(--border-radius);
                 font-weight: 500;
                 border: none;
-                transition: all 0.3s ease;
+                transition: all 0.2s ease;
                 text-decoration: none;
                 display: inline-flex;
                 align-items: center;
-                gap: 8px;
-                cursor: pointer;
+                gap: var(--spacing-xs);
+                font-size: 0.9rem;
             }
             
             .btn-modern:hover {
-                transform: translateY(-2px);
-                box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+                transform: translateY(-1px);
+                box-shadow: var(--shadow-md);
+            }
+            
+            .btn-primary-modern {
+                background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+                color: white;
+            }
+            
+            .btn-secondary-modern {
+                background: linear-gradient(135deg, var(--secondary-color), #7c3aed);
+                color: white;
             }
             
             .btn-success-modern {
                 background: linear-gradient(135deg, var(--success-color), #059669);
+                color: white;
+            }
+            
+            .btn-danger-modern {
+                background: linear-gradient(135deg, var(--danger-color), #dc2626);
                 color: white;
             }
             
@@ -155,65 +145,66 @@
                 color: white;
             }
             
-            .btn-secondary-modern {
-                background: linear-gradient(135deg, #6b7280, #4b5563);
-                color: white;
-            }
-            
-            .form-actions {
+            .action-buttons {
                 display: flex;
-                gap: 15px;
+                gap: var(--spacing-sm);
                 justify-content: center;
-                margin-top: 30px;
-                flex-wrap: wrap;
+                margin-top: var(--spacing-xl);
             }
             
-            .form-status {
-                text-align: center;
-                margin-bottom: 20px;
-                padding: 15px;
-                border-radius: 10px;
+            .icon-muted {
+                color: rgba(255, 255, 255, 0.8);
+            }
+            
+            .form-section {
+                background: white;
+                border-radius: var(--border-radius);
+                padding: var(--spacing-lg);
+                border: 1px solid var(--border-color);
+                margin-bottom: var(--spacing-lg);
+            }
+            
+            .form-section h4 {
+                color: var(--dark-color);
                 font-weight: 500;
+                margin-bottom: var(--spacing-md);
+                display: flex;
+                align-items: center;
+                gap: var(--spacing-sm);
+                font-size: 1rem;
             }
             
-            .form-status.editing {
-                background: linear-gradient(135deg, #fef3c7, #fde68a);
-                color: #92400e;
-                border: 1px solid #f59e0b;
+            .back-link {
+                display: inline-flex;
+                align-items: center;
+                gap: var(--spacing-xs);
+                color: white;
+                text-decoration: none;
+                font-size: 0.9rem;
+                margin-bottom: var(--spacing-lg);
+                padding: var(--spacing-xs) var(--spacing-sm);
+                border-radius: var(--border-radius);
+                background: rgba(255, 255, 255, 0.2);
+                backdrop-filter: blur(10px);
             }
             
-            .form-status.creating {
-                background: linear-gradient(135deg, #d1fae5, #a7f3d0);
-                color: #065f46;
-                border: 1px solid var(--success-color);
-            }
-            
-            .field-icon {
-                width: 20px;
-                text-align: center;
+            .back-link:hover {
+                color: white;
+                background: rgba(255, 255, 255, 0.3);
             }
             
             @media (max-width: 768px) {
-                .main-container {
-                    margin: 10px;
-                    padding: 20px;
+                .form-container {
+                    margin: var(--spacing-sm);
+                    padding: var(--spacing-lg);
                 }
                 
-                .header-section h1 {
-                    font-size: 2rem;
+                .form-header h1 {
+                    font-size: 1.5rem;
                 }
                 
-                .form-card {
-                    padding: 25px;
-                }
-                
-                .form-actions {
+                .action-buttons {
                     flex-direction: column;
-                }
-                
-                .btn-modern {
-                    width: 100%;
-                    justify-content: center;
                 }
             }
         </style>
@@ -223,134 +214,110 @@
         <div th:replace="fragments/notifications :: notifications"></div>
         
         <div class="container-fluid">
-            <div class="main-container">
-                <!-- Header Section -->
-                <div class="header-section">
+            <div class="form-container">
+                <!-- Back Link -->
+                <a href="#" th:href="@{/personas}" class="back-link">
+                    <i class="fas fa-arrow-left"></i>
+                    Volver al listado
+                </a>
+                
+                <!-- Form Header -->
+                <div class="form-header">
                     <h1>
-                        <i class="fas fa-user-edit" th:if="${personId != null}"></i>
-                        <i class="fas fa-user-plus" th:if="${personId == null}"></i>
-                        <span th:text="${personId != null ? 'Editar Persona' : 'Agregar Nueva Persona'}">Formulario</span>
+                        <i class="fas fa-user icon-muted"></i>
+                        <span th:text="${persona.id == 0 ? 'Nueva Persona' : 'Editar Persona'}">Formulario</span>
                     </h1>
-                    <p th:text="${personId != null ? 'Modifica la información de la persona seleccionada' : 'Completa el formulario para registrar una nueva persona'}">
-                        Gestión de personas
+                    <p th:text="${persona.id == 0 ? 'Completa los datos para crear una nueva persona' : 'Modifica los datos de la persona'}">
+                        Información de la persona
                     </p>
                 </div>
                 
-                <!-- Form Card -->
-                <div class="form-card">
-                    <!-- Form Status -->
-                    <div class="form-status" th:class="${personId != null ? 'editing' : 'creating'}">
-                        <i class="fas fa-info-circle me-2"></i>
-                        <span th:text="${personId != null ? 'Modo Edición - Actualizando información existente' : 'Modo Creación - Registrando nueva persona'}">
-                            Estado del formulario
-                        </span>
-                    </div>
+                <!-- Form Section -->
+                <div class="form-section">
+                    <h4>
+                        <i class="fas fa-info-circle" style="color: var(--info-color);"></i>
+                        Información Personal
+                    </h4>
                     
-                    <!-- Formulario para AGREGAR persona -->
-                    <form th:if="${personId == null}" th:object="${person}" method="post" id="personaForm" th:action="@{/personas/addpersona}">
-                        <div class="form-group-modern">
-                            <label class="form-label-modern">
-                                <i class="fas fa-user field-icon"></i>
-                                Nombre
-                            </label>
-                            <input th:field="*{nombre}" th:value="${nombre}" type="text" class="form-control-modern" placeholder="Ingresa el nombre">
+                    <form th:action="@{/personas/guardarpersona}" th:object="${persona}" method="post">
+                        <input type="hidden" th:field="*{id}">
+                        
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="nombre" class="form-label">
+                                        <i class="fas fa-user" style="color: var(--primary-color);"></i> Nombre
+                                    </label>
+                                    <input type="text" 
+                                           th:field="*{nombre}" 
+                                           id="nombre" 
+                                           class="form-control form-control-modern" 
+                                           placeholder="Ingresa el nombre"
+                                           required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="apellido" class="form-label">
+                                        <i class="fas fa-user-tag" style="color: var(--secondary-color);"></i> Apellido
+                                    </label>
+                                    <input type="text" 
+                                           th:field="*{apellido}" 
+                                           id="apellido" 
+                                           class="form-control form-control-modern" 
+                                           placeholder="Ingresa el apellido"
+                                           required>
+                                </div>
+                            </div>
                         </div>
                         
-                        <div class="form-group-modern">
-                            <label class="form-label-modern">
-                                <i class="fas fa-user-tag field-icon"></i>
-                                Apellido
-                            </label>
-                            <input th:field="*{apellido}" th:value="${apellido}" type="text" class="form-control-modern" placeholder="Ingresa el apellido">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="email" class="form-label">
+                                        <i class="fas fa-envelope" style="color: var(--info-color);"></i> Email
+                                    </label>
+                                    <input type="email" 
+                                           th:field="*{email}" 
+                                           id="email" 
+                                           class="form-control form-control-modern" 
+                                           placeholder="ejemplo@correo.com"
+                                           required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="telefono" class="form-label">
+                                        <i class="fas fa-phone" style="color: var(--success-color);"></i> Teléfono
+                                    </label>
+                                    <input type="tel" 
+                                           th:field="*{telefono}" 
+                                           id="telefono" 
+                                           class="form-control form-control-modern" 
+                                           placeholder="+1234567890"
+                                           required>
+                                </div>
+                            </div>
                         </div>
                         
-                        <div class="form-group-modern">
-                            <label class="form-label-modern">
-                                <i class="fas fa-envelope field-icon"></i>
-                                Email
+                        <div class="form-group">
+                            <label for="direccion" class="form-label">
+                                <i class="fas fa-map-marker-alt" style="color: var(--warning-color);"></i> Dirección
                             </label>
-                            <input th:field="*{email}" th:value="${email}" type="email" class="form-control-modern" placeholder="ejemplo@email.com">
+                            <textarea th:field="*{direccion}" 
+                                      id="direccion" 
+                                      class="form-control form-control-modern" 
+                                      rows="3"
+                                      placeholder="Ingresa la dirección completa"></textarea>
                         </div>
                         
-                        <div class="form-group-modern">
-                            <label class="form-label-modern">
-                                <i class="fas fa-phone field-icon"></i>
-                                Teléfono
-                            </label>
-                            <input th:field="*{telefono}" th:value="${telefono}" type="tel" class="form-control-modern" placeholder="Ingresa el teléfono">
-                        </div>
-                        
-                        <div class="form-group-modern">
-                            <label class="form-label-modern">
-                                <i class="fas fa-map-marker-alt field-icon"></i>
-                                Dirección
-                            </label>
-                            <input th:field="*{direccion}" th:value="${direccion}" type="text" class="form-control-modern" placeholder="Ingresa la dirección completa">
-                        </div>
-                        
-                        <div class="form-actions">
-                            <button type="submit" class="btn-modern btn-success-modern">
+                        <!-- Action Buttons -->
+                        <div class="action-buttons">
+                            <button type="submit" class="btn btn-modern btn-success-modern">
                                 <i class="fas fa-save"></i>
-                                Guardar Persona
+                                <span th:text="${persona.id == 0 ? 'Crear Persona' : 'Actualizar Persona'}">Guardar</span>
                             </button>
-                            <a href="#" th:href="@{/personas/cancelar}" class="btn-modern btn-secondary-modern">
-                                <i class="fas fa-times"></i>
-                                Cancelar
-                            </a>
-                        </div>
-                    </form>
-                    
-                    <!-- Formulario para EDITAR persona -->
-                    <form th:if="${personId != null}" th:object="${person}" method="post" id="personaForm" th:action="@{/personas/editarpersona(id=${personId})}">
-                        <!-- Campo oculto para el ID en edición -->
-                        <input type="hidden" name="id" th:value="${personId}">
-                        
-                        <div class="form-group-modern">
-                            <label class="form-label-modern">
-                                <i class="fas fa-user field-icon"></i>
-                                Nombre
-                            </label>
-                            <input th:field="*{nombre}" th:value="${nombre}" type="text" class="form-control-modern" placeholder="Ingresa el nombre">
-                        </div>
-                        
-                        <div class="form-group-modern">
-                            <label class="form-label-modern">
-                                <i class="fas fa-user-tag field-icon"></i>
-                                Apellido
-                            </label>
-                            <input th:field="*{apellido}" th:value="${apellido}" type="text" class="form-control-modern" placeholder="Ingresa el apellido">
-                        </div>
-                        
-                        <div class="form-group-modern">
-                            <label class="form-label-modern">
-                                <i class="fas fa-envelope field-icon"></i>
-                                Email
-                            </label>
-                            <input th:field="*{email}" th:value="${email}" type="email" class="form-control-modern" placeholder="ejemplo@email.com">
-                        </div>
-                        
-                        <div class="form-group-modern">
-                            <label class="form-label-modern">
-                                <i class="fas fa-phone field-icon"></i>
-                                Teléfono
-                            </label>
-                            <input th:field="*{telefono}" th:value="${telefono}" type="tel" class="form-control-modern" placeholder="Ingresa el teléfono">
-                        </div>
-                        
-                        <div class="form-group-modern">
-                            <label class="form-label-modern">
-                                <i class="fas fa-map-marker-alt field-icon"></i>
-                                Dirección
-                            </label>
-                            <input th:field="*{direccion}" th:value="${direccion}" type="text" class="form-control-modern" placeholder="Ingresa la dirección completa">
-                        </div>
-                        
-                        <div class="form-actions">
-                            <button type="submit" class="btn-modern btn-warning-modern">
-                                <i class="fas fa-edit"></i>
-                                Actualizar Persona
-                            </button>
-                            <a href="#" th:href="@{/personas/cancelar}" class="btn-modern btn-secondary-modern">
+                            <a href="#" th:href="@{/personas}" class="btn btn-modern btn-secondary-modern">
                                 <i class="fas fa-times"></i>
                                 Cancelar
                             </a>
@@ -365,13 +332,12 @@
         
         <!-- Script para mostrar notificaciones del servidor -->
         <script th:inline="javascript">
-            // Variables del servidor
+            // Mostrar notificaciones si existen en el modelo
             /*<![CDATA[*/
             const serverMessage = /*[[${message}]]*/ null;
             const serverError = /*[[${error}]]*/ null;
             const serverSuccess = /*[[${success}]]*/ null;
             const serverWarning = /*[[${warning}]]*/ null;
-            const personId = /*[[${personId}]]*/ null;
             /*]]>*/
             
             // Mostrar mensajes del servidor
