@@ -1,72 +1,189 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Notificaciones</title>
+    <style>
+        .notification-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 9999;
+            max-width: 400px;
+        }
+        
+        .notification {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            border-left: 4px solid;
+            transform: translateX(100%);
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .notification.show {
+            transform: translateX(0);
+        }
+        
+        .notification.success {
+            border-left-color: #10b981;
+            background: linear-gradient(135deg, #d1fae5, #a7f3d0);
+        }
+        
+        .notification.error {
+            border-left-color: #ef4444;
+            background: linear-gradient(135deg, #fee2e2, #fecaca);
+        }
+        
+        .notification.warning {
+            border-left-color: #f59e0b;
+            background: linear-gradient(135deg, #fef3c7, #fde68a);
+        }
+        
+        .notification.info {
+            border-left-color: #3b82f6;
+            background: linear-gradient(135deg, #dbeafe, #bfdbfe);
+        }
+        
+        .notification-icon {
+            font-size: 1.5rem;
+            min-width: 24px;
+        }
+        
+        .notification.success .notification-icon {
+            color: #10b981;
+        }
+        
+        .notification.error .notification-icon {
+            color: #ef4444;
+        }
+        
+        .notification.warning .notification-icon {
+            color: #f59e0b;
+        }
+        
+        .notification.info .notification-icon {
+            color: #3b82f6;
+        }
+        
+        .notification-content {
+            flex: 1;
+        }
+        
+        .notification-title {
+            font-weight: 600;
+            margin-bottom: 5px;
+            font-size: 1rem;
+        }
+        
+        .notification-message {
+            font-size: 0.9rem;
+            opacity: 0.9;
+            margin: 0;
+        }
+        
+        .notification-close {
+            background: none;
+            border: none;
+            color: #6b7280;
+            cursor: pointer;
+            padding: 5px;
+            border-radius: 50%;
+            transition: all 0.2s ease;
+            font-size: 1.2rem;
+        }
+        
+        .notification-close:hover {
+            background: rgba(0, 0, 0, 0.1);
+            color: #374151;
+        }
+        
+        @media (max-width: 768px) {
+            .notification-container {
+                left: 20px;
+                right: 20px;
+                max-width: none;
+            }
+            
+            .notification {
+                margin-bottom: 10px;
+            }
+        }
+    </style>
 </head>
 <body>
-    <!-- Fragmento para notificaciones -->
     <div th:fragment="notifications">
-        <!-- Contenedor de notificaciones -->
-        <div id="notification-container" style="position: fixed; top: 20px; right: 20px; z-index: 9999;"></div>
+        <div class="notification-container" id="notificationContainer"></div>
         
-        <!-- Script para mostrar notificaciones -->
-        <script th:inline="javascript">
+        <script>
             // Función para mostrar notificaciones
-            function showNotification(message, type = 'info', duration = 5000) {
-                const container = document.getElementById('notification-container');
+            function showNotification(type, title, message, duration = 5000) {
+                const container = document.getElementById('notificationContainer');
                 
-                // Crear elemento de notificación
                 const notification = document.createElement('div');
-                notification.className = `alert alert-${type} alert-dismissible fade show`;
-                notification.style.minWidth = '300px';
-                notification.style.maxWidth = '400px';
-                notification.style.marginBottom = '10px';
-                notification.style.boxShadow = '0 4px 6px rgba(0, 0, 0, 0.1)';
+                notification.className = `notification ${type}`;
                 
-                // Contenido de la notificación
+                const icons = {
+                    success: 'fas fa-check-circle',
+                    error: 'fas fa-exclamation-circle',
+                    warning: 'fas fa-exclamation-triangle',
+                    info: 'fas fa-info-circle'
+                };
+                
                 notification.innerHTML = `
-                    <strong>${type === 'success' ? '✅ Éxito' : type === 'danger' ? '❌ Error' : type === 'warning' ? '⚠️ Advertencia' : 'ℹ️ Información'}</strong>
-                    <br>
-                    ${message}
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
+                    <i class="${icons[type]} notification-icon"></i>
+                    <div class="notification-content">
+                        <div class="notification-title">${title}</div>
+                        <p class="notification-message">${message}</p>
+                    </div>
+                    <button class="notification-close" onclick="this.parentElement.remove()">
+                        <i class="fas fa-times"></i>
                     </button>
                 `;
                 
-                // Agregar al contenedor
                 container.appendChild(notification);
                 
-                // Auto-cerrar después del tiempo especificado
+                // Animar entrada
                 setTimeout(() => {
-                    if (notification.parentNode) {
-                        notification.remove();
-                    }
-                }, duration);
+                    notification.classList.add('show');
+                }, 100);
                 
-                // Cerrar al hacer clic en X
-                notification.querySelector('.close').addEventListener('click', () => {
-                    notification.remove();
-                });
+                // Auto-remover después del tiempo especificado
+                if (duration > 0) {
+                    setTimeout(() => {
+                        notification.classList.remove('show');
+                        setTimeout(() => {
+                            if (notification.parentElement) {
+                                notification.remove();
+                            }
+                        }, 300);
+                    }, duration);
+                }
             }
             
-            // Función para mostrar errores del servidor
-            function showServerError(errorMessage) {
-                showNotification(errorMessage, 'danger', 8000);
-            }
-            
-            // Función para mostrar mensajes de éxito
+            // Funciones específicas para cada tipo
             function showSuccess(message) {
-                showNotification(message, 'success', 5000);
+                showNotification('success', '¡Éxito!', message);
             }
             
-            // Función para mostrar advertencias
+            function showError(message) {
+                showNotification('error', 'Error', message);
+            }
+            
             function showWarning(message) {
-                showNotification(message, 'warning', 6000);
+                showNotification('warning', 'Advertencia', message);
             }
             
-            // Función para mostrar información
             function showInfo(message) {
-                showNotification(message, 'info', 4000);
+                showNotification('info', 'Información', message);
+            }
+            
+            // Alias para compatibilidad
+            function showServerError(message) {
+                showError(message);
             }
         </script>
     </div>

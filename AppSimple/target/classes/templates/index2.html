@@ -1,74 +1,367 @@
 <!DOCTYPE html>
-<!--
-To change this license header, choose License Headers in Project Properties.
-To change this template file, choose Tools | Templates
-and open the template in the editor.
--->
 <html xmlns:th="http://www.thymeleaf.org">
     <head>
-        <title>Carga de Datos</title>
+        <title>Sistema de Gestión de Personas - Formulario</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <!--css-->
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
-
+        <!-- Bootstrap 5 CSS -->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+        <!-- Font Awesome -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+        <!-- Google Fonts -->
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+        
+        <style>
+            :root {
+                --primary-color: #6366f1;
+                --secondary-color: #8b5cf6;
+                --success-color: #10b981;
+                --danger-color: #ef4444;
+                --warning-color: #f59e0b;
+                --info-color: #3b82f6;
+                --dark-color: #1f2937;
+                --light-color: #f8fafc;
+                --border-color: #e2e8f0;
+            }
+            
+            * {
+                font-family: 'Inter', sans-serif;
+            }
+            
+            body {
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                min-height: 100vh;
+                padding: 20px 0;
+            }
+            
+            .main-container {
+                background: rgba(255, 255, 255, 0.95);
+                backdrop-filter: blur(10px);
+                border-radius: 20px;
+                box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+                padding: 40px;
+                margin: 20px auto;
+                max-width: 800px;
+            }
+            
+            .header-section {
+                text-align: center;
+                margin-bottom: 40px;
+                padding: 30px;
+                background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+                border-radius: 15px;
+                color: white;
+                box-shadow: 0 10px 30px rgba(99, 102, 241, 0.3);
+            }
+            
+            .header-section h1 {
+                font-weight: 700;
+                font-size: 2.5rem;
+                margin-bottom: 10px;
+            }
+            
+            .header-section p {
+                font-size: 1.1rem;
+                opacity: 0.9;
+                margin-bottom: 0;
+            }
+            
+            .form-card {
+                background: white;
+                border-radius: 15px;
+                padding: 40px;
+                box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+                border: 1px solid var(--border-color);
+            }
+            
+            .form-group-modern {
+                margin-bottom: 25px;
+            }
+            
+            .form-label-modern {
+                font-weight: 600;
+                color: var(--dark-color);
+                margin-bottom: 8px;
+                display: flex;
+                align-items: center;
+                gap: 8px;
+            }
+            
+            .form-control-modern {
+                border: 2px solid var(--border-color);
+                border-radius: 10px;
+                padding: 12px 16px;
+                font-size: 1rem;
+                transition: all 0.3s ease;
+                background: white;
+            }
+            
+            .form-control-modern:focus {
+                border-color: var(--primary-color);
+                box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+                outline: none;
+            }
+            
+            .input-group-modern {
+                position: relative;
+                display: flex;
+                align-items: center;
+            }
+            
+            .input-group-modern .form-control-modern {
+                border-radius: 10px 0 0 10px;
+                border-right: none;
+            }
+            
+            .input-group-text-modern {
+                background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+                color: white;
+                border: 2px solid var(--primary-color);
+                border-left: none;
+                border-radius: 0 10px 10px 0;
+                padding: 12px 16px;
+                font-weight: 500;
+                min-width: 120px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+            
+            .btn-modern {
+                padding: 12px 24px;
+                border-radius: 10px;
+                font-weight: 500;
+                border: none;
+                transition: all 0.3s ease;
+                text-decoration: none;
+                display: inline-flex;
+                align-items: center;
+                gap: 8px;
+                cursor: pointer;
+            }
+            
+            .btn-modern:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+            }
+            
+            .btn-success-modern {
+                background: linear-gradient(135deg, var(--success-color), #059669);
+                color: white;
+            }
+            
+            .btn-warning-modern {
+                background: linear-gradient(135deg, var(--warning-color), #d97706);
+                color: white;
+            }
+            
+            .btn-secondary-modern {
+                background: linear-gradient(135deg, #6b7280, #4b5563);
+                color: white;
+            }
+            
+            .form-actions {
+                display: flex;
+                gap: 15px;
+                justify-content: center;
+                margin-top: 30px;
+                flex-wrap: wrap;
+            }
+            
+            .form-status {
+                text-align: center;
+                margin-bottom: 20px;
+                padding: 15px;
+                border-radius: 10px;
+                font-weight: 500;
+            }
+            
+            .form-status.editing {
+                background: linear-gradient(135deg, #fef3c7, #fde68a);
+                color: #92400e;
+                border: 1px solid #f59e0b;
+            }
+            
+            .form-status.creating {
+                background: linear-gradient(135deg, #d1fae5, #a7f3d0);
+                color: #065f46;
+                border: 1px solid var(--success-color);
+            }
+            
+            .field-icon {
+                width: 20px;
+                text-align: center;
+            }
+            
+            @media (max-width: 768px) {
+                .main-container {
+                    margin: 10px;
+                    padding: 20px;
+                }
+                
+                .header-section h1 {
+                    font-size: 2rem;
+                }
+                
+                .form-card {
+                    padding: 25px;
+                }
+                
+                .form-actions {
+                    flex-direction: column;
+                }
+                
+                .btn-modern {
+                    width: 100%;
+                    justify-content: center;
+                }
+            }
+        </style>
     </head>
     <body>
         <!-- Incluir fragmento de notificaciones -->
         <div th:replace="fragments/notifications :: notifications"></div>
         
-        <div class="text-center"> 
-            <br>
-            <h2 th:text="${personId != null ? 'Editar Persona' : 'Agregar Persona'}">Agregar Persona</h2>
-            <br>
-        </div>
-        <div class="container">
-              <!-- Formulario para EDITAR persona -->
-            <form th:action="${personId != null} ? @{/personas/editarpersona(id=${personId})} : @{/personas/addpersona}" th:object="${person}" method="post" id="personaForm">
-                <!-- Campo oculto para el ID en edición -->
-                <input type="hidden" th:if="${personId != null}" name="id" th:value="${personId}">
+        <div class="container-fluid">
+            <div class="main-container">
+                <!-- Header Section -->
+                <div class="header-section">
+                    <h1>
+                        <i class="fas fa-user-edit" th:if="${personId != null}"></i>
+                        <i class="fas fa-user-plus" th:if="${personId == null}"></i>
+                        <span th:text="${personId != null ? 'Editar Persona' : 'Agregar Nueva Persona'}">Formulario</span>
+                    </h1>
+                    <p th:text="${personId != null ? 'Modifica la información de la persona seleccionada' : 'Completa el formulario para registrar una nueva persona'}">
+                        Gestión de personas
+                    </p>
+                </div>
                 
-                <div class="input-group mb-2">
-                    <div class="input-group-prepend">
-                        <div class="input-group-text">Nombre</div>
+                <!-- Form Card -->
+                <div class="form-card">
+                    <!-- Form Status -->
+                    <div class="form-status" th:class="${personId != null ? 'editing' : 'creating'}">
+                        <i class="fas fa-info-circle me-2"></i>
+                        <span th:text="${personId != null ? 'Modo Edición - Actualizando información existente' : 'Modo Creación - Registrando nueva persona'}">
+                            Estado del formulario
+                        </span>
                     </div>
-                    <input th:field="*{nombre}" th:value="${nombre}" type="text" class="form-control" id="inlineFormInputGroup">
+                    
+                    <!-- Formulario para AGREGAR persona -->
+                    <form th:if="${personId == null}" th:object="${person}" method="post" id="personaForm" th:action="@{/personas/addpersona}">
+                        <div class="form-group-modern">
+                            <label class="form-label-modern">
+                                <i class="fas fa-user field-icon"></i>
+                                Nombre
+                            </label>
+                            <input th:field="*{nombre}" th:value="${nombre}" type="text" class="form-control-modern" placeholder="Ingresa el nombre">
+                        </div>
+                        
+                        <div class="form-group-modern">
+                            <label class="form-label-modern">
+                                <i class="fas fa-user-tag field-icon"></i>
+                                Apellido
+                            </label>
+                            <input th:field="*{apellido}" th:value="${apellido}" type="text" class="form-control-modern" placeholder="Ingresa el apellido">
+                        </div>
+                        
+                        <div class="form-group-modern">
+                            <label class="form-label-modern">
+                                <i class="fas fa-envelope field-icon"></i>
+                                Email
+                            </label>
+                            <input th:field="*{email}" th:value="${email}" type="email" class="form-control-modern" placeholder="ejemplo@email.com">
+                        </div>
+                        
+                        <div class="form-group-modern">
+                            <label class="form-label-modern">
+                                <i class="fas fa-phone field-icon"></i>
+                                Teléfono
+                            </label>
+                            <input th:field="*{telefono}" th:value="${telefono}" type="tel" class="form-control-modern" placeholder="Ingresa el teléfono">
+                        </div>
+                        
+                        <div class="form-group-modern">
+                            <label class="form-label-modern">
+                                <i class="fas fa-map-marker-alt field-icon"></i>
+                                Dirección
+                            </label>
+                            <input th:field="*{direccion}" th:value="${direccion}" type="text" class="form-control-modern" placeholder="Ingresa la dirección completa">
+                        </div>
+                        
+                        <div class="form-actions">
+                            <button type="submit" class="btn-modern btn-success-modern">
+                                <i class="fas fa-save"></i>
+                                Guardar Persona
+                            </button>
+                            <a href="#" th:href="@{/personas/cancelar}" class="btn-modern btn-secondary-modern">
+                                <i class="fas fa-times"></i>
+                                Cancelar
+                            </a>
+                        </div>
+                    </form>
+                    
+                    <!-- Formulario para EDITAR persona -->
+                    <form th:if="${personId != null}" th:object="${person}" method="post" id="personaForm" th:action="@{/personas/editarpersona(id=${personId})}">
+                        <!-- Campo oculto para el ID en edición -->
+                        <input type="hidden" name="id" th:value="${personId}">
+                        
+                        <div class="form-group-modern">
+                            <label class="form-label-modern">
+                                <i class="fas fa-user field-icon"></i>
+                                Nombre
+                            </label>
+                            <input th:field="*{nombre}" th:value="${nombre}" type="text" class="form-control-modern" placeholder="Ingresa el nombre">
+                        </div>
+                        
+                        <div class="form-group-modern">
+                            <label class="form-label-modern">
+                                <i class="fas fa-user-tag field-icon"></i>
+                                Apellido
+                            </label>
+                            <input th:field="*{apellido}" th:value="${apellido}" type="text" class="form-control-modern" placeholder="Ingresa el apellido">
+                        </div>
+                        
+                        <div class="form-group-modern">
+                            <label class="form-label-modern">
+                                <i class="fas fa-envelope field-icon"></i>
+                                Email
+                            </label>
+                            <input th:field="*{email}" th:value="${email}" type="email" class="form-control-modern" placeholder="ejemplo@email.com">
+                        </div>
+                        
+                        <div class="form-group-modern">
+                            <label class="form-label-modern">
+                                <i class="fas fa-phone field-icon"></i>
+                                Teléfono
+                            </label>
+                            <input th:field="*{telefono}" th:value="${telefono}" type="tel" class="form-control-modern" placeholder="Ingresa el teléfono">
+                        </div>
+                        
+                        <div class="form-group-modern">
+                            <label class="form-label-modern">
+                                <i class="fas fa-map-marker-alt field-icon"></i>
+                                Dirección
+                            </label>
+                            <input th:field="*{direccion}" th:value="${direccion}" type="text" class="form-control-modern" placeholder="Ingresa la dirección completa">
+                        </div>
+                        
+                        <div class="form-actions">
+                            <button type="submit" class="btn-modern btn-warning-modern">
+                                <i class="fas fa-edit"></i>
+                                Actualizar Persona
+                            </button>
+                            <a href="#" th:href="@{/personas/cancelar}" class="btn-modern btn-secondary-modern">
+                                <i class="fas fa-times"></i>
+                                Cancelar
+                            </a>
+                        </div>
+                    </form>
                 </div>
-                <div class="input-group mb-2">
-                    <div class="input-group-prepend">
-                        <div class="input-group-text">Apellido</div>
-                    </div>
-                    <input th:field="*{apellido}" th:value="${apellido}" type="text" class="form-control" id="inlineFormInputGroup">
-                </div>
-                <div class="input-group mb-2">
-                    <div class="input-group-prepend">
-                        <div class="input-group-text">Email</div>
-                    </div>
-                    <input th:field="*{email}" th:value="${email}" type="text" class="form-control" id="inlineFormInputGroup">
-                </div>
-                <div class="input-group mb-2">
-                    <div class="input-group-prepend">
-                        <div class="input-group-text">Telefono</div>
-                    </div>
-                    <input th:field="*{telefono}" th:value="${telefono}" type="text" class="form-control" id="inlineFormInputGroup">
-                </div>
-                <div class="input-group mb-2">
-                    <div class="input-group-prepend">
-                        <div class="input-group-text">Direccion</div>
-                    </div>
-                    <input th:field="*{direccion}" th:value="${direccion}" type="text" class="form-control" id="inlineFormInputGroup">
-                </div>
-                <br>
-                <button type="submit" class="btn btn-success" th:text="${personId != null ? 'Actualizar' : 'Guardar'}">Guardar</button>
-                <a href="#" th:href="@{/personas/cancelar}" ><button type="button" class="btn btn-warning">Cancelar</button></a>
-                <br>
-            </form>
+            </div>
         </div>
         
-        <!-- Scripts de Bootstrap -->
-        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
-        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOb2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
+        <!-- Bootstrap 5 JS -->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
         
         <!-- Script para mostrar notificaciones del servidor -->
         <script th:inline="javascript">
